@@ -25,11 +25,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           test -n "$OPENAI_API_KEY" || { echo "Configure repository secret OPENAI_API_KEY"; exit 1; }
-          python -m json.tool data/config.github.json > /dev/null
+          python -m json.tool data/config.arabic.json > /dev/null
       - name: Generate Horizon report
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: uv run horizon --hours 24 --config data/config.github.json
+        run: uv run horizon --hours 24 --config data/config.arabic.json
       - name: Restore Arabic history
         run: |
           mkdir -p docs
