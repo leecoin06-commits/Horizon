@@ -1,0 +1,11 @@
+# رادار Horizon المالي بالعربية
+- موعد التشغيل: يوميًا الساعة 15:00 بتوقيت الرياض = 12:00 UTC.
+- التخصص: BTC، IBIT، الأسواق الأمريكية، الحوسبة الكمومية.
+- يعمل سير العمل المستقل: `.github/workflows/horizon-arabic-daily.yml`.
+- الإعداد: `data/config.github.json`.
+- إضافة السر: Settings → Secrets and variables → Actions → New repository secret باسم `OPENAI_API_KEY`.
+- يجب تفعيل GitHub Actions والسماح بأذونات المحتويات للكتابة، ثم تفعيل Pages من فرع `gh-pages` والمجلد `/(root)`.
+- للتجربة: Actions → Horizon Arabic Daily Radar → Run workflow.
+- رابط التقرير بعد النشر: https://leecoin06-commits.github.io/Horizon/arabic/
+- قد يتأخر تنفيذ الجدولة؛ تكلفة OpenAI API مستقلة عن اشتراك ChatGPT.
+- خدمة X المباشرة غير مفعلة؛ المصادر تعتمد على RSS وإصدارات Bitcoin Core.
