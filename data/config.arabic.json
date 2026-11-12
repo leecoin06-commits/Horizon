@@ -1,0 +1,134 @@
+{
+  "ai": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "api_key_env": "OPENAI_API_KEY",
+    "temperature": 0.2,
+    "max_tokens": 4096,
+    "throttle_sec": 0.5,
+    "languages": [
+      "en"
+    ],
+    "analysis_concurrency": 2,
+    "enrichment_concurrency": 1
+  },
+  "processing": {
+    "profiles_dir": "profiles",
+    "default_profile": "finance-news",
+    "profile_settings": {
+      "finance-news": {
+        "threshold": 6,
+        "topic_dedup": true
+      }
+    }
+  },
+  "display": {
+    "icon_style": "emoji"
+  },
+  "email": {
+    "enabled": false
+  },
+  "sources": {
+    "github": [
+      {
+        "type": "repo_releases",
+        "owner": "bitcoin",
+        "repo": "bitcoin",
+        "enabled": true,
+        "category": "bitcoin",
+        "profile": "finance-news"
+      }
+    ],
+    "rss": [
+      {
+        "name": "Bitcoin BTC headlines",
+        "url": "https://news.google.com/rss/search?q=Bitcoin%20BTC%20ETF%20miners%20regulation%20security&hl=en-US&gl=US&ceid=US:en",
+        "enabled": true,
+        "category": "bitcoin",
+        "profile": "finance-news"
+      },
+      {
+        "name": "IBIT Bitcoin ETF",
+        "url": "https://news.google.com/rss/search?q=IBIT%20BlackRock%20iShares%20Bitcoin%20Trust%20ETF%20inflows%20outflows&hl=en-US&gl=US&ceid=US:en",
+        "enabled": true,
+        "category": "ibit",
+        "profile": "finance-news"
+      },
+      {
+        "name": "US equities and macro",
+        "url": "https://news.google.com/rss/search?q=Federal%20Reserve%20CPI%20PCE%20FOMC%20Treasury%20Nasdaq%20S%26P%20500%20NVDA%20TSLA&hl=en-US&gl=US&ceid=US:en",
+        "enabled": true,
+        "category": "us-markets",
+        "profile": "finance-news"
+      },
+      {
+        "name": "Quantum computing and Bitcoin",
+        "url": "https://news.google.com/rss/search?q=quantum%20computing%20post%20quantum%20cryptography%20Bitcoin%20signatures%20NIST&hl=en-US&gl=US&ceid=US:en",
+        "enabled": true,
+        "category": "quantum",
+        "profile": "finance-news"
+      },
+      {
+        "name": "CNBC Finance",
+        "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
+        "enabled": true,
+        "category": "us-markets",
+        "profile": "finance-news"
+      },
+      {
+        "name": "Federal Reserve releases",
+        "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+        "enabled": true,
+        "category": "us-markets",
+        "profile": "finance-news"
+      }
+    ]
+  },
+  "collection": {
+    "time_window_hours": 24
+  },
+  "digest": {
+    "max_items": 16,
+    "profile_order": [
+      "finance-news"
+    ],
+    "category_groups": {
+      "bitcoin": {
+        "name": "Bitcoin",
+        "limit": 6,
+        "categories": [
+          "bitcoin"
+        ]
+      },
+      "ibit": {
+        "name": "IBIT",
+        "limit": 3,
+        "categories": [
+          "ibit"
+        ]
+      },
+      "us": {
+        "name": "US markets",
+        "limit": 5,
+        "categories": [
+          "us-markets"
+        ]
+      },
+      "quantum": {
+        "name": "Quantum",
+        "limit": 3,
+        "categories": [
+          "quantum"
+        ]
+      }
+    },
+    "default_group": "other",
+    "default_group_limit": 2
+  },
+  "webhook": {
+    "enabled": false
+  },
+  "wechat": {
+    "enabled": false
+  }
+}
