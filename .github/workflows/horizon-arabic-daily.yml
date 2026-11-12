@@ -1,0 +1,54 @@
+name: Horizon Arabic Daily Radar
+on:
+  schedule:
+    - cron: '0 12 * * *' # 15:00 Asia/Riyadh (UTC+3)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: horizon-arabic-daily
+  cancel-in-progress: false
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v6
+      - name: Install project dependencies
+        run: uv sync
+      - name: Verify OpenAI key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo "Configure repository secret OPENAI_API_KEY"; exit 1; }
+          python -m json.tool data/config.github.json > /dev/null
+      - name: Generate Horizon report
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: uv run horizon --hours 24 --config data/config.github.json
+      - name: Restore Arabic history
+        run: |
+          mkdir -p docs
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch --depth=1 origin gh-pages:refs/remotes/origin/gh-pages
+            if git cat-file -e origin/gh-pages:arabic/archive 2>/dev/null; then
+              git archive origin/gh-pages arabic/archive | tar -x -C docs
+            fi
+          fi
+      - name: Translate to Arabic and create RTL page
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TRANSLATE_MODEL: gpt-4o-mini
+        run: python scripts/build_arabic.py
+      - name: Publish Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+          keep_files: true
+          enable_jekyll: false
